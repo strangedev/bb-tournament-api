@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "TableStatus",
+  "description": "A status overview for the table client",
+  "type": "object",
+  "properties": {
+    "currentRound": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tableNr": {
+      "type": "string"
+    },
+    "NS": {
+      "$ref": "Pair.json"
+    },
+    "EW": {
+      "$ref": "Pair.json"
+    },
+    "boardsNotYetEntered": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "boardNr": { "type": "number", "minimum": 0 },
+          "missingDirections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["N", "E", "S", "W"]
+            }
+          }
+        },
+        "required": ["boardNr", "missingDirections"]
+      }
+    },
+    "deals": {
+      "type": "array",
+      "items": {
+        "$ref": "Deal.json"
+      }
+    }
+  },
+  "required": [
+    "currentRound",
+    "tableNr",
+    "NS",
+    "EW",
+    "boardsNotYetEntered",
+    "deals"
+  ]
+}

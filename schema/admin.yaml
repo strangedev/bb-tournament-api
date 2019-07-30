@@ -1,0 +1,377 @@
+openapi: 3.0.0
+info:
+  title: API for tournament administration
+  version: 0.0.1
+  contact:
+    name: marvelous.systems
+    url: https://marvelous.systems/
+    email: admin@marvelous.systems
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    "401":
+      description: The client token is not valid
+    "404":
+      description: Not found
+
+paths:
+  /boards:
+    get:
+      operationId: getBoards
+      tags:
+        - views
+      summary: Retrieves boards
+      parameters:
+        - in: query
+          required: false
+          name: boardNr
+          description: The board number
+          schema:
+            type: number
+      responses:
+        "200":
+          description: A list of matching boards
+          content:
+            application/json:
+              schema:
+                $ref: "./Boards.json"
+        "401": 
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+          
+  /tables:
+    get:
+      operationId: getTables
+      tags:
+        - views
+      summary: Retrieves tables
+      parameters:
+        - in: query
+          name: tableNr
+          required: false
+          description: The table number
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of matching tables
+          content:
+            application/json:
+              schema:
+                $ref: "./Tables.json"
+        "401": 
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+
+  /pairs:
+    get:
+      operationId: getPairs
+      tags:
+        - views
+      summary: Retrieves pairs
+      parameters:
+        - in: query
+          name: pairNr
+          required: false
+          description: The pair number
+          schema:
+            type: number
+      responses:
+        "200":
+          description: A list of matching pairs
+          content:
+            application/json:
+              schema:
+                $ref: "./Pairs.json"
+        "401": 
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+  
+  /rounds:
+    get:
+      operationId: getRounds
+      tags:
+        - views
+      summary: Retrieves rounds
+      parameters:
+        - in: query
+          name: roundNr
+          required: false
+          description: The number of the round
+          schema:
+            type: number
+        - in: query
+          name: tableNr
+          required: false
+          description: The number of the table
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of matching rounds
+          content:
+            application/json:
+              schema:
+                $ref: "./Rounds.json"  # TODO
+        "401": 
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+
+  /deals:
+    get:
+      operationId: getDeals
+      tags:
+        - views
+      summary: Retrieves deals
+      parameters:
+        - in: query
+          name: boardNr
+          required: false
+          description: The number of the board that is played in the deal
+          schema:
+            type: number
+        - in: query
+          name: roundNr
+          required: false
+          description: The number of the round the deal is played in
+          schema:
+            type: number
+        - in: query
+          name: tableNr
+          required: false
+          description: The number of the table that plays the deal
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of all deals
+          content:
+            application/json:
+              schema:
+                $ref: "./Deals.json"
+        "401": 
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+
+  /board:
+    patch:
+      operationId: patchBoard
+      tags:
+        - interventions
+      summary: Corrects a board
+      parameters:
+        - in: query
+          name: boardNr
+          description: The board number
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: The corrected board
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./Board.mongodb.json"
+      responses:
+        "200":
+          description: The board was updated
+          content:
+            application/json:
+              schema:
+                $ref: "./Board.mongodb.json"
+        "401": 
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+      
+  /player:
+    patch:
+      operationId: swapPlayer
+      summary: Swaps out a player
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: dbvId
+          required: true
+          description: The DBV ID of the player
+          schema:
+            type: string
+      requestBody:
+        description: The new player
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./Player.json"
+      responses:
+        "200":
+          description: The new player
+          content:
+            application/json:
+              schema:
+                $ref: "./Player.json"
+        "401": 
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+      
+  /contract:
+    patch:
+      operationId: patchContract
+      summary: Corrects a contract. Scores will be re-calculated.
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: roundNr
+          required: true
+          description: The round in which the contract was played
+          schema:
+            type: number
+        - in: query
+          name: boardNr
+          required: true
+          description: The board for which the contract was played
+          schema:
+            type: number
+      requestBody:
+        description: The corrected contract
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./RequestContract.json"
+      responses:
+        "200":
+          description: The corrected contract
+          content:
+            application/json:
+              schema:
+                $ref: "./Contract.json"
+        "401": 
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: [] 
+      
+  /result:
+    patch:
+      operationId: patchResult
+      summary: Corrects a result. Scores will be re-calculated.
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: roundNr
+          required: true
+          description: The round in which the result was achieved
+          schema:
+            type: number
+        - in: query
+          name: boardNr
+          required: true
+          description: The board for which the result was achieved
+          schema:
+            type: number
+      requestBody:
+        description: The corrected result
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./RequestResult.json"
+      responses:
+        "200":
+          description: The corrected result
+          content:
+            application/json:
+              schema:
+                $ref: "./RequestResult.json"
+        "401": 
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: [] 
+
+  /score:
+    patch:
+      summary: Overrides a score (e.g. for applying penalties).
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: roundNr
+          required: true
+          description: The round in which the score was achieved
+          schema:
+            type: number
+        - in: query
+          name: boardNr
+          required: true
+          description: The board for which the score was achieved
+          schema:
+            type: number
+      requestBody:
+        description: The new score
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./InterventionScore.json"
+      responses:
+        "200":
+          description: The new score
+          content:
+            application/json:
+              schema:
+                $ref: "./InterventionScore.json"
+        "401": 
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: [] 
+
+  /newClientToken:
+    get:
+      summary: Generates a new clientToken for a table
+      tags:
+        - configuration
+      parameters:
+        - in: query
+          name: tableNr
+          description: The number of the table
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: The new table configuration
+          content:
+            application/json:
+              schema:
+                $ref: "./Table.mongodb.json"
+        "401": 
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: [] 
+

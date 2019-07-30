@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: API for everyone
+  version: 0.0.1
+  contact:
+    name: marvelous.systems
+    url: https://marvelous.systems/
+    email: admin@marvelous.systems
+paths:
+  /scores:
+    get:
+      operationId: scores
+      summary: Gets the overall scores for everyone in the tournament
+      responses:
+        "200":
+          description: The scoreboard
+          content:
+            application/json:
+              schema:
+                title: ScoreBoard
+                description: List of overall Scores for every pair in the tournament
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pair:
+                      title: Pair
+                      description: A pair of Players playing together
+                      type: object
+                      properties:
+                        number:
+                          type: number
+                          minimum: 0
+                        players:
+                          type: array
+                          items:
+                            title: Player
+                            description: A wonderful individual playing the beautiful game
+                              of bridge
+                            type: object
+                            properties:
+                              dbvId:
+                                type: string
+                                description: ID issued by deutscher bridgeverband, or a
+                                  prefixed random number, if player is not
+                                  registered
+                              name:
+                                type: string
+                            required:
+                              - dbvId
+                              - name
+                          minItems: 2
+                          maxItems: 2
+                          uniqueItems: true
+                    score:
+                      type: number
+                      minimum: 0
+                      maximum: 100
+                  required:
+                    - pair
+                    - score

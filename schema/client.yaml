@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: API for table client
+  version: 0.0.1
+  contact:
+    name: marvelous.systems
+    url: https://marvelous.systems/
+    email: admin@marvelous.systems
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    "401":
+      description: The client token is not valid
+    "404":
+      description: The tournament is over, what are you still doing here?
+
+paths:
+  /status:
+    get:
+      operationId: tableStatus
+      summary: Gets the current round, games in that round, boards playes in the round and players involved.
+      responses:
+        "200":
+          description: "The client status"
+          content:
+            application/json:
+              schema:
+                $ref: "./TableStatus.json"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+
+  /contract:
+    post:
+      operationId: postContract
+      summary: Posts the contract for one of the games in the current round
+      parameters:
+        - in: query
+          name: boardNr
+          schema:
+            type: integer
+          description: Number of the board the for which the contract is entered
+      requestBody:
+        description: The contract
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "./RequestContract.json"
+      responses:
+        "201":
+          description: The entered contract
+          content:
+            application/json:
+              schema:
+                $ref: "./Contract.json"
+        "409":
+          description: Contract was already entered
+          content:
+            application/json:
+              schema:
+                $ref: "./Contract.json"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+
+  /board:
+    post:
+      operationId: postBoard
+      summary: Posts one of the PlayerHands in a board
+      parameters:
+        - in: query
+          name: boardNr
+          schema:
+            type: integer
+          required: true
+          description: Board.boardNr of the board
+        - in: query
+          name: direction
+          schema:
+            type: string
+            enum:
+              - "N"
+              - "S"
+              - "E"
+              - "W"
+          required: true
+          description: Direction of the PlayerHand within the board
+      requestBody:
+        description: The PlayerHand
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./PlayerHand.json"
+      responses:
+        "201":
+          description: The hand was posted
+          content:
+            application/json:
+              schema:
+                $ref: "./PlayerHand.json"
+        "400":
+          description: The board is not part of the current round on the authenticated table, the direction is not valid or the request is malformatted.
+        "409":
+          description: The hand was already entered
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+
+  /result:
+    post:
+      operationId: postResult
+      summary: Post results for a game in the current round
+      parameters:
+        - in: query
+          name: boardNr
+          schema:
+            type: integer
+          required: true
+          description: The board number for which the result is entered
+      requestBody:
+        description: The Result
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: "./RequestResult.json"
+      responses:
+        "201":
+          description: Result was posted. Returns the submitted and previous results for this board
+          content:
+            application/json:
+              schema:
+                $ref: "./BoardResults.json"
+        "409":
+          description: The result was already entered or the contract is missing
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []

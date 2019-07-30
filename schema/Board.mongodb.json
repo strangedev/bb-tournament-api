@@ -1,0 +1,192 @@
+{
+  "title": "Board",
+  "description": "Mapping of 4 distinct sets of Cards to player directions",
+  "type": "object",
+  "properties": {
+    "boardNr": {
+      "type": "number",
+      "minimum": 0
+    },
+    "N": {
+      "oneOf": [
+        {
+          "type": "null",
+          "description": "If no hand is predefined and has not been entered yet"
+        },
+        {
+          "type": "array",
+          "items": {
+            "title": "Card",
+            "description": "A single playing card",
+            "type": "object",
+            "properties": {
+              "suit": {
+                "title": "Suit",
+                "description": "Suit of a playing Card",
+                "type": "string",
+                "enum": ["clubs", "diamonds", "spades", "hearts"]
+              },
+              "value": {
+                "type": "string",
+                "enum": [
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "J",
+                  "Q",
+                  "K",
+                  "A"
+                ]
+              }
+            },
+            "required": ["suit", "value"]
+          },
+          "minItems": 13,
+          "maxItems": 13
+        }
+      ]
+    },
+    "E": {
+      "oneOf": [
+        {
+          "type": "null",
+          "description": "If no hand is predefined and has not been entered yet"
+        },
+        {
+          "type": "array",
+          "items": {
+            "title": "Card",
+            "description": "A single playing card",
+            "type": "object",
+            "properties": {
+              "suit": {
+                "title": "Suit",
+                "description": "Suit of a playing Card",
+                "type": "string",
+                "enum": ["clubs", "diamonds", "spades", "hearts"]
+              },
+              "value": {
+                "type": "string",
+                "enum": [
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "J",
+                  "Q",
+                  "K",
+                  "A"
+                ]
+              }
+            },
+            "required": ["suit", "value"]
+          },
+          "minItems": 13,
+          "maxItems": 13
+        }
+      ]
+    },
+    "S": {
+      "oneOf": [
+        {
+          "type": "null",
+          "description": "If no hand is predefined and has not been entered yet"
+        },
+        {
+          "type": "array",
+          "items": {
+            "title": "Card",
+            "description": "A single playing card",
+            "type": "object",
+            "properties": {
+              "suit": {
+                "title": "Suit",
+                "description": "Suit of a playing Card",
+                "type": "string",
+                "enum": ["clubs", "diamonds", "spades", "hearts"]
+              },
+              "value": {
+                "type": "string",
+                "enum": [
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "J",
+                  "Q",
+                  "K",
+                  "A"
+                ]
+              }
+            },
+            "required": ["suit", "value"]
+          },
+          "minItems": 13,
+          "maxItems": 13
+        }
+      ]
+    },
+    "W": {
+      "oneOf": [
+        {
+          "type": "null",
+          "description": "If no hand is predefined and has not been entered yet"
+        },
+        {
+          "type": "array",
+          "items": {
+            "title": "Card",
+            "description": "A single playing card",
+            "type": "object",
+            "properties": {
+              "suit": {
+                "title": "Suit",
+                "description": "Suit of a playing Card",
+                "type": "string",
+                "enum": ["clubs", "diamonds", "spades", "hearts"]
+              },
+              "value": {
+                "type": "string",
+                "enum": [
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "J",
+                  "Q",
+                  "K",
+                  "A"
+                ]
+              }
+            },
+            "required": ["suit", "value"]
+          },
+          "minItems": 13,
+          "maxItems": 13
+        }
+      ]
+    }
+  },
+  "required": ["boardNr", "N", "E", "S", "W"]
+}

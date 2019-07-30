@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Contract",
+  "description": "The Contract negotiated by Pairs playing a Deal",
+  "type": "object",
+  "properties": {
+    "declarer": { "type": "string", "enum": ["N", "S", "E", "W"] },
+    "level": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 7
+    },
+    "suit": {
+      "title": "Suit",
+      "description": "Suit of a playing Card",
+      "type": "string",
+      "enum": ["clubs", "diamonds", "spades", "hearts", "noTrump"]
+    },
+    "contra": {
+      "type": "string",
+      "enum": ["none", "once", "twice"]
+    }
+  },
+  "required": ["declarer", "level", "suit", "contra"]
+}

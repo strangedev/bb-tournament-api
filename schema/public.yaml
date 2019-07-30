@@ -1,0 +1,21 @@
+openapi: 3.0.0
+info:
+  title: API for everyone
+  version: 0.0.1
+  contact:
+    name: marvelous.systems
+    url: https://marvelous.systems/
+    email: admin@marvelous.systems
+
+paths:
+  /scores:
+    get:
+      operationId: scores
+      summary: Gets the overall scores for everyone in the tournament
+      responses:
+        "200":
+          description: "The scoreboard"
+          content:
+            application/json:
+              schema:
+                $ref: "./ScoreBoard.json"

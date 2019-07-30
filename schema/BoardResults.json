@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "BoardResults",
+  "description": "All recorded Results and Scores of a particular board",
+  "type": "object",
+  "properties": {
+    "ownResult": {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "$ref": "Contract.json"
+        },
+        "result": {
+          "$ref": "Result.json"
+        },
+        "score": {
+          "$ref": "Score.json"
+        }
+      },
+      "required": ["contract", "result", "score"]
+    },
+    "otherResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "contract": {
+            "$ref": "Contract.json"
+          },
+          "result": {
+            "$ref": "Result.json"
+          },
+          "score": {
+            "$ref": "Score.json"
+          }
+        },
+        "required": ["contract", "result", "score"]
+      }
+    }
+  },
+  "required": ["ownResult", "otherResults"]
+}

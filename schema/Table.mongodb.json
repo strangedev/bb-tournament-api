@@ -1,0 +1,26 @@
+{
+  "title": "Table",
+  "description": "A physical Table",
+  "type": "object",
+  "properties": {
+    "clientToken": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null",
+          "description": "If no client is configured yet"
+        }
+      ]
+    },
+    "currentRound": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tableNr": {
+      "type": "string"
+    }
+  },
+  "required": ["clientToken", "currentRound", "tableNr"]
+}

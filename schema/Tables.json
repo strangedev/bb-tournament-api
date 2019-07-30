@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Tables",
+  "description": "A list of Tables",
+  "type": "array",
+  "items": {
+    "$ref": "Table.mongodb.json"
+  }
+}

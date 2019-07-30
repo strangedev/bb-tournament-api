@@ -1,0 +1,468 @@
+openapi: 3.0.0
+info:
+  title: API for table client
+  version: 0.0.1
+  contact:
+    name: marvelous.systems
+    url: https://marvelous.systems/
+    email: admin@marvelous.systems
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    "401":
+      description: The client token is not valid
+    "404":
+      description: The tournament is over, what are you still doing here?
+paths:
+  /status:
+    get:
+      operationId: tableStatus
+      summary: Gets the current round, games in that round, boards playes in the round
+        and players involved.
+      responses:
+        "200":
+          description: The client status
+          content:
+            application/json:
+              schema:
+                title: TableStatus
+                description: A status overview for the table client
+                type: object
+                properties:
+                  currentRound:
+                    type: number
+                    minimum: 0
+                  tableNr:
+                    type: string
+                  NS:
+                    title: Pair
+                    description: A pair of Players playing together
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                        minimum: 0
+                      players:
+                        type: array
+                        items:
+                          title: Player
+                          description: A wonderful individual playing the beautiful game of
+                            bridge
+                          type: object
+                          properties:
+                            dbvId:
+                              type: string
+                              description: ID issued by deutscher bridgeverband, or a
+                                prefixed random number, if player is not
+                                registered
+                            name:
+                              type: string
+                          required:
+                            - dbvId
+                            - name
+                        minItems: 2
+                        maxItems: 2
+                        uniqueItems: true
+                  EW:
+                    $ref: "#/paths/~1status/get/responses/200/content/application~1\
+                      json/schema/properties/NS"
+                  boardsNotYetEntered:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        boardNr:
+                          type: number
+                          minimum: 0
+                        missingDirections:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                              - N
+                              - E
+                              - S
+                              - W
+                      required:
+                        - boardNr
+                        - missingDirections
+                  deals:
+                    type: array
+                    items:
+                      title: Deal
+                      description: A single deal that is played
+                      type: object
+                      properties:
+                        boardNr:
+                          type: integer
+                          minimum: 0
+                        contract:
+                          oneOf:
+                            - nullable: true
+                            - $ref: "#/paths/~1result/post/responses/201/content/ap\
+                                plication~1json/schema/properties/ownResult/pro\
+                                perties/contract"
+                        result:
+                          oneOf:
+                            - nullable: true
+                            - $ref: "#/paths/~1result/post/requestBody/content/appl\
+                                ication~1json/schema/properties/result"
+                        score:
+                          oneOf:
+                            - nullable: true
+                            - $ref: "#/paths/~1result/post/responses/201/content/ap\
+                                plication~1json/schema/properties/ownResult/pro\
+                                perties/score"
+                      required:
+                        - boardNr
+                        - contract
+                        - result
+                        - score
+                required:
+                  - currentRound
+                  - tableNr
+                  - NS
+                  - EW
+                  - boardsNotYetEntered
+                  - deals
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+  /contract:
+    post:
+      operationId: postContract
+      summary: Posts the contract for one of the games in the current round
+      parameters:
+        - in: query
+          name: boardNr
+          schema:
+            type: integer
+          description: Number of the board the for which the contract is entered
+      requestBody:
+        description: The contract
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Contract
+              description: The Contract negotiated by Pairs playing a Deal
+              type: object
+              properties:
+                declarer:
+                  type: string
+                  enum:
+                    - N
+                    - S
+                    - E
+                    - W
+                level:
+                  type: number
+                  minimum: 1
+                  maximum: 7
+                suit:
+                  title: Suit
+                  description: Suit of a playing Card
+                  type: string
+                  enum:
+                    - clubs
+                    - diamonds
+                    - spades
+                    - hearts
+                    - noTrump
+                contra:
+                  type: string
+                  enum:
+                    - none
+                    - once
+                    - twice
+              required:
+                - declarer
+                - level
+                - suit
+                - contra
+      responses:
+        "201":
+          description: The entered contract
+          content:
+            application/json:
+              schema:
+                title: Contract
+                description: The Contract negotiated by Pairs playing a Deal
+                type: object
+                properties:
+                  declarer:
+                    type: string
+                    enum:
+                      - N
+                      - S
+                      - E
+                      - W
+                  level:
+                    type: number
+                    minimum: 1
+                    maximum: 7
+                  suit:
+                    title: Suit
+                    description: Suit of a playing Card
+                    type: string
+                    enum:
+                      - clubs
+                      - diamonds
+                      - spades
+                      - hearts
+                      - noTrump
+                  contra:
+                    type: string
+                    enum:
+                      - none
+                      - once
+                      - twice
+                  danger:
+                    type: boolean
+                required:
+                  - declarer
+                  - level
+                  - suit
+                  - contra
+                  - danger
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+        "409":
+          description: Contract was already entered
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1contract/post/responses/201/content/application~1j\
+                  son/schema"
+      security:
+        - bearerAuth: []
+  /board:
+    post:
+      operationId: postBoard
+      summary: Posts one of the PlayerHands in a board
+      parameters:
+        - in: query
+          name: boardNr
+          schema:
+            type: integer
+          required: true
+          description: Board.boardNr of the board
+        - in: query
+          name: direction
+          schema:
+            type: string
+            enum:
+              - N
+              - S
+              - E
+              - W
+          required: true
+          description: Direction of the PlayerHand within the board
+      requestBody:
+        description: The PlayerHand
+        required: true
+        content:
+          application/json:
+            schema:
+              title: PlayerHand
+              description: One of the 4 sets of 13 Cards in a Board
+              type: array
+              items:
+                title: Card
+                description: A single playing card
+                type: object
+                properties:
+                  suit:
+                    title: Suit
+                    description: Suit of a playing Card
+                    type: string
+                    enum:
+                      - clubs
+                      - diamonds
+                      - spades
+                      - hearts
+                  value:
+                    type: string
+                    enum:
+                      - "2"
+                      - "3"
+                      - "4"
+                      - "5"
+                      - "6"
+                      - "7"
+                      - "8"
+                      - "9"
+                      - "10"
+                      - J
+                      - Q
+                      - K
+                      - A
+                required:
+                  - suit
+                  - value
+              minItems: 13
+              maxItems: 13
+      responses:
+        "201":
+          description: The hand was posted
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1board/post/requestBody/content/application~1json/s\
+                  chema"
+        "400":
+          description: The board is not part of the current round on the authenticated
+            table, the direction is not valid or the request is malformatted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+        "409":
+          description: The hand was already entered
+      security:
+        - bearerAuth: []
+  /result:
+    post:
+      operationId: postResult
+      summary: Post results for a game in the current round
+      parameters:
+        - in: query
+          name: boardNr
+          schema:
+            type: integer
+          required: true
+          description: The board number for which the result is entered
+      requestBody:
+        description: The Result
+        required: true
+        content:
+          application/json:
+            schema:
+              title: RequestResult
+              description: A Result as it is sent by the client
+              type: object
+              properties:
+                result:
+                  title: Result
+                  description: The Result of a Deal
+                  type: number
+                  minimum: -13
+                  maximum: 6
+              required:
+                - result
+      responses:
+        "201":
+          description: Result was posted. Returns the submitted and previous results for
+            this board
+          content:
+            application/json:
+              schema:
+                title: BoardResults
+                description: All recorded Results and Scores of a particular board
+                type: object
+                properties:
+                  ownResult:
+                    type: object
+                    properties:
+                      contract:
+                        title: Contract
+                        description: The Contract negotiated by Pairs playing a Deal
+                        type: object
+                        properties:
+                          declarer:
+                            type: string
+                            enum:
+                              - N
+                              - S
+                              - E
+                              - W
+                          level:
+                            type: number
+                            minimum: 1
+                            maximum: 7
+                          suit:
+                            title: Suit
+                            description: Suit of a playing Card
+                            type: string
+                            enum:
+                              - clubs
+                              - diamonds
+                              - spades
+                              - hearts
+                              - noTrump
+                          contra:
+                            type: string
+                            enum:
+                              - none
+                              - once
+                              - twice
+                          danger:
+                            type: boolean
+                        required:
+                          - declarer
+                          - level
+                          - suit
+                          - contra
+                          - danger
+                      result:
+                        $ref: "#/paths/~1result/post/requestBody/content/applicatio\
+                          n~1json/schema/properties/result"
+                      score:
+                        title: Score
+                        description: The Score of a Deal
+                        type: object
+                        properties:
+                          points:
+                            type: number
+                            minimum: -3160
+                            maximum: 3160
+                          percent:
+                            type: number
+                            minimum: 0
+                            maximum: 100
+                        required:
+                          - points
+                          - percent
+                    required:
+                      - contract
+                      - result
+                      - score
+                  otherResults:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contract:
+                          $ref: "#/paths/~1result/post/responses/201/content/applic\
+                            ation~1json/schema/properties/ownResult/properties/\
+                            contract"
+                        result:
+                          $ref: "#/paths/~1result/post/requestBody/content/applicat\
+                            ion~1json/schema/properties/result"
+                        score:
+                          $ref: "#/paths/~1result/post/responses/201/content/applic\
+                            ation~1json/schema/properties/ownResult/properties/\
+                            score"
+                      required:
+                        - contract
+                        - result
+                        - score
+                required:
+                  - ownResult
+                  - otherResults
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+        "409":
+          description: The result was already entered or the contract is missing
+      security:
+        - bearerAuth: []

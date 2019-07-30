@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Score",
+  "description": "The Score of a Deal",
+  "type": "object",
+  "properties": {
+    "points": {
+      "type": "number",
+      "minimum": -3160,
+      "maximum": 3160
+    },
+    "percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    }
+  },
+  "required": ["points", "percent"]
+}

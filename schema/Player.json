@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Player",
+  "description": "A wonderful individual playing the beautiful game of bridge",
+  "type": "object",
+  "properties": {
+    "dbvId": {
+      "type": "string",
+      "description": "ID issued by deutscher bridgeverband, or a prefixed random number, if player is not registered"
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": ["dbvId", "name"]
+}

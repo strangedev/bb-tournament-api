@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "PlayerHand",
+  "description": "One of the 4 sets of 13 Cards in a Board",
+  "type": "array",
+  "items": {
+    "$ref": "Card.json"
+  },
+  "minItems": 13,
+  "maxItems": 13
+}

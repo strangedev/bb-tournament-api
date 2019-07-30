@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Deal",
+  "description": "A single deal that is played",
+  "type": "object",
+  "properties": {
+    "boardNr": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "contract": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "Contract.json"
+        }
+      ]
+    },
+    "result": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "Result.json"
+        }
+      ]
+    },
+    "score": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "Score.json"
+        }
+      ]
+    }
+  },
+  "required": ["boardNr", "contract", "result", "score"]
+}

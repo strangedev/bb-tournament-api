@@ -1,0 +1,10 @@
+{
+  "name": "bb-tournament-api",
+  "version": "1.0.0",
+  "description": "API schema for BridgeBuddy tournament server",
+  "main": "noindex",
+  "repository": "git@github.com:strangedev/bb-tournament-api.git",
+  "author": "Noah Hummel <n.p.hummel@gmail.com>",
+  "license": "All Rights Reserved",
+  "private": false
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "ScoreBoard",
+  "description": "List of overall Scores for every pair in the tournament",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "pair": {
+        "$ref": "Pair.json"
+      },
+      "score": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      }
+    },
+    "required": ["pair", "score"]
+  }
+}

@@ -1,0 +1,1017 @@
+openapi: 3.0.0
+info:
+  title: API for tournament administration
+  version: 0.0.1
+  contact:
+    name: marvelous.systems
+    url: https://marvelous.systems/
+    email: admin@marvelous.systems
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    "401":
+      description: The client token is not valid
+    "404":
+      description: Not found
+paths:
+  /boards:
+    get:
+      operationId: getBoards
+      tags:
+        - views
+      summary: Retrieves boards
+      parameters:
+        - in: query
+          required: false
+          name: boardNr
+          description: The board number
+          schema:
+            type: number
+      responses:
+        "200":
+          description: A list of matching boards
+          content:
+            application/json:
+              schema:
+                title: Boards
+                description: A list of Boards
+                type: array
+                items:
+                  title: Board
+                  description: Mapping of 4 distinct sets of Cards to player directions
+                  type: object
+                  properties:
+                    boardNr:
+                      type: number
+                      minimum: 0
+                    N:
+                      oneOf:
+                        - description: If no hand is predefined and has not been entered yet
+                          nullable: true
+                        - type: array
+                          items:
+                            title: Card
+                            description: A single playing card
+                            type: object
+                            properties:
+                              suit:
+                                title: Suit
+                                description: Suit of a playing Card
+                                type: string
+                                enum:
+                                  - clubs
+                                  - diamonds
+                                  - spades
+                                  - hearts
+                              value:
+                                type: string
+                                enum:
+                                  - "2"
+                                  - "3"
+                                  - "4"
+                                  - "5"
+                                  - "6"
+                                  - "7"
+                                  - "8"
+                                  - "9"
+                                  - "10"
+                                  - J
+                                  - Q
+                                  - K
+                                  - A
+                            required:
+                              - suit
+                              - value
+                          minItems: 13
+                          maxItems: 13
+                    E:
+                      oneOf:
+                        - description: If no hand is predefined and has not been entered yet
+                          nullable: true
+                        - type: array
+                          items:
+                            title: Card
+                            description: A single playing card
+                            type: object
+                            properties:
+                              suit:
+                                title: Suit
+                                description: Suit of a playing Card
+                                type: string
+                                enum:
+                                  - clubs
+                                  - diamonds
+                                  - spades
+                                  - hearts
+                              value:
+                                type: string
+                                enum:
+                                  - "2"
+                                  - "3"
+                                  - "4"
+                                  - "5"
+                                  - "6"
+                                  - "7"
+                                  - "8"
+                                  - "9"
+                                  - "10"
+                                  - J
+                                  - Q
+                                  - K
+                                  - A
+                            required:
+                              - suit
+                              - value
+                          minItems: 13
+                          maxItems: 13
+                    S:
+                      oneOf:
+                        - description: If no hand is predefined and has not been entered yet
+                          nullable: true
+                        - type: array
+                          items:
+                            title: Card
+                            description: A single playing card
+                            type: object
+                            properties:
+                              suit:
+                                title: Suit
+                                description: Suit of a playing Card
+                                type: string
+                                enum:
+                                  - clubs
+                                  - diamonds
+                                  - spades
+                                  - hearts
+                              value:
+                                type: string
+                                enum:
+                                  - "2"
+                                  - "3"
+                                  - "4"
+                                  - "5"
+                                  - "6"
+                                  - "7"
+                                  - "8"
+                                  - "9"
+                                  - "10"
+                                  - J
+                                  - Q
+                                  - K
+                                  - A
+                            required:
+                              - suit
+                              - value
+                          minItems: 13
+                          maxItems: 13
+                    W:
+                      oneOf:
+                        - description: If no hand is predefined and has not been entered yet
+                          nullable: true
+                        - type: array
+                          items:
+                            title: Card
+                            description: A single playing card
+                            type: object
+                            properties:
+                              suit:
+                                title: Suit
+                                description: Suit of a playing Card
+                                type: string
+                                enum:
+                                  - clubs
+                                  - diamonds
+                                  - spades
+                                  - hearts
+                              value:
+                                type: string
+                                enum:
+                                  - "2"
+                                  - "3"
+                                  - "4"
+                                  - "5"
+                                  - "6"
+                                  - "7"
+                                  - "8"
+                                  - "9"
+                                  - "10"
+                                  - J
+                                  - Q
+                                  - K
+                                  - A
+                            required:
+                              - suit
+                              - value
+                          minItems: 13
+                          maxItems: 13
+                  required:
+                    - boardNr
+                    - N
+                    - E
+                    - S
+                    - W
+        "401":
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+  /tables:
+    get:
+      operationId: getTables
+      tags:
+        - views
+      summary: Retrieves tables
+      parameters:
+        - in: query
+          name: tableNr
+          required: false
+          description: The table number
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of matching tables
+          content:
+            application/json:
+              schema:
+                title: Tables
+                description: A list of Tables
+                type: array
+                items:
+                  title: Table
+                  description: A physical Table
+                  type: object
+                  properties:
+                    clientToken:
+                      oneOf:
+                        - type: string
+                        - description: If no client is configured yet
+                          nullable: true
+                    currentRound:
+                      type: number
+                      minimum: 0
+                    tableNr:
+                      type: string
+                  required:
+                    - clientToken
+                    - currentRound
+                    - tableNr
+        "401":
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+  /pairs:
+    get:
+      operationId: getPairs
+      tags:
+        - views
+      summary: Retrieves pairs
+      parameters:
+        - in: query
+          name: pairNr
+          required: false
+          description: The pair number
+          schema:
+            type: number
+      responses:
+        "200":
+          description: A list of matching pairs
+          content:
+            application/json:
+              schema:
+                title: Pairs
+                description: A list of Pairs
+                type: array
+                items:
+                  title: Pair
+                  description: A pair of Players playing together
+                  type: object
+                  properties:
+                    number:
+                      type: number
+                      minimum: 0
+                    players:
+                      type: array
+                      items:
+                        title: Player
+                        description: A wonderful individual playing the beautiful game of
+                          bridge
+                        type: object
+                        properties:
+                          dbvId:
+                            type: string
+                            description: ID issued by deutscher bridgeverband, or a
+                              prefixed random number, if player is not
+                              registered
+                          name:
+                            type: string
+                        required:
+                          - dbvId
+                          - name
+                      minItems: 2
+                      maxItems: 2
+                      uniqueItems: true
+        "401":
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+  /rounds:
+    get:
+      operationId: getRounds
+      tags:
+        - views
+      summary: Retrieves rounds
+      parameters:
+        - in: query
+          name: roundNr
+          required: false
+          description: The number of the round
+          schema:
+            type: number
+        - in: query
+          name: tableNr
+          required: false
+          description: The number of the table
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of matching rounds
+          content:
+            application/json:
+              schema:
+                title: Rounds
+                description: A list of Rounds
+                type: array
+                items:
+                  title: Round
+                  description: A seating constellation playing one or more deals.
+                  type: object
+                  properties:
+                    roundNr:
+                      type: number
+                      minimum: 0
+                    tableNr:
+                      type: string
+                    NS:
+                      type: number
+                      description: Pair number
+                    EW:
+                      type: number
+                      description: Pair number
+                    deals:
+                      type: array
+                      items:
+                        title: DBRef
+                        description: A reference to an _id of another document
+                        type: object
+                        properties:
+                          collection:
+                            description: Deal - The collection the referenced object
+                              resides in
+                            type: string
+                          id:
+                            type: string
+                        required:
+                          - collection
+                          - id
+                      minItems: 1
+                      uniqueItems: true
+                  required:
+                    - roundNr
+                    - tableNr
+                    - NS
+                    - EW
+                    - deals
+        "401":
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+  /deals:
+    get:
+      operationId: getDeals
+      tags:
+        - views
+      summary: Retrieves deals
+      parameters:
+        - in: query
+          name: boardNr
+          required: false
+          description: The number of the board that is played in the deal
+          schema:
+            type: number
+        - in: query
+          name: roundNr
+          required: false
+          description: The number of the round the deal is played in
+          schema:
+            type: number
+        - in: query
+          name: tableNr
+          required: false
+          description: The number of the table that plays the deal
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of all deals
+          content:
+            application/json:
+              schema:
+                title: Deals
+                description: A list of Deals
+                type: array
+                items:
+                  title: Deal
+                  description: A single deal that is played
+                  type: object
+                  properties:
+                    boardNr:
+                      type: integer
+                      minimum: 0
+                    contract:
+                      oneOf:
+                        - nullable: true
+                        - title: Contract
+                          description: The Contract negotiated by Pairs playing a Deal
+                          type: object
+                          properties:
+                            declarer:
+                              type: string
+                              enum:
+                                - N
+                                - S
+                                - E
+                                - W
+                            level:
+                              type: number
+                              minimum: 1
+                              maximum: 7
+                            suit:
+                              title: Suit
+                              description: Suit of a playing Card
+                              type: string
+                              enum:
+                                - clubs
+                                - diamonds
+                                - spades
+                                - hearts
+                                - noTrump
+                            contra:
+                              type: string
+                              enum:
+                                - none
+                                - once
+                                - twice
+                            danger:
+                              type: boolean
+                          required:
+                            - declarer
+                            - level
+                            - suit
+                            - contra
+                            - danger
+                    result:
+                      oneOf:
+                        - nullable: true
+                        - $ref: "#/paths/~1result/patch/requestBody/content/applica\
+                            tion~1json/schema/properties/result"
+                    score:
+                      oneOf:
+                        - nullable: true
+                        - title: Score
+                          description: The Score of a Deal
+                          type: object
+                          properties:
+                            points:
+                              type: number
+                              minimum: -3160
+                              maximum: 3160
+                            percent:
+                              type: number
+                              minimum: 0
+                              maximum: 100
+                          required:
+                            - points
+                            - percent
+                  required:
+                    - boardNr
+                    - contract
+                    - result
+                    - score
+        "401":
+          $ref: "#/components/responses/401"
+      security:
+        - bearerAuth: []
+  /board:
+    patch:
+      operationId: patchBoard
+      tags:
+        - interventions
+      summary: Corrects a board
+      parameters:
+        - in: query
+          name: boardNr
+          description: The board number
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: The corrected board
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Board
+              description: Mapping of 4 distinct sets of Cards to player directions
+              type: object
+              properties:
+                boardNr:
+                  type: number
+                  minimum: 0
+                N:
+                  oneOf:
+                    - description: If no hand is predefined and has not been entered yet
+                      nullable: true
+                    - type: array
+                      items:
+                        title: Card
+                        description: A single playing card
+                        type: object
+                        properties:
+                          suit:
+                            title: Suit
+                            description: Suit of a playing Card
+                            type: string
+                            enum:
+                              - clubs
+                              - diamonds
+                              - spades
+                              - hearts
+                          value:
+                            type: string
+                            enum:
+                              - "2"
+                              - "3"
+                              - "4"
+                              - "5"
+                              - "6"
+                              - "7"
+                              - "8"
+                              - "9"
+                              - "10"
+                              - J
+                              - Q
+                              - K
+                              - A
+                        required:
+                          - suit
+                          - value
+                      minItems: 13
+                      maxItems: 13
+                E:
+                  oneOf:
+                    - description: If no hand is predefined and has not been entered yet
+                      nullable: true
+                    - type: array
+                      items:
+                        title: Card
+                        description: A single playing card
+                        type: object
+                        properties:
+                          suit:
+                            title: Suit
+                            description: Suit of a playing Card
+                            type: string
+                            enum:
+                              - clubs
+                              - diamonds
+                              - spades
+                              - hearts
+                          value:
+                            type: string
+                            enum:
+                              - "2"
+                              - "3"
+                              - "4"
+                              - "5"
+                              - "6"
+                              - "7"
+                              - "8"
+                              - "9"
+                              - "10"
+                              - J
+                              - Q
+                              - K
+                              - A
+                        required:
+                          - suit
+                          - value
+                      minItems: 13
+                      maxItems: 13
+                S:
+                  oneOf:
+                    - description: If no hand is predefined and has not been entered yet
+                      nullable: true
+                    - type: array
+                      items:
+                        title: Card
+                        description: A single playing card
+                        type: object
+                        properties:
+                          suit:
+                            title: Suit
+                            description: Suit of a playing Card
+                            type: string
+                            enum:
+                              - clubs
+                              - diamonds
+                              - spades
+                              - hearts
+                          value:
+                            type: string
+                            enum:
+                              - "2"
+                              - "3"
+                              - "4"
+                              - "5"
+                              - "6"
+                              - "7"
+                              - "8"
+                              - "9"
+                              - "10"
+                              - J
+                              - Q
+                              - K
+                              - A
+                        required:
+                          - suit
+                          - value
+                      minItems: 13
+                      maxItems: 13
+                W:
+                  oneOf:
+                    - description: If no hand is predefined and has not been entered yet
+                      nullable: true
+                    - type: array
+                      items:
+                        title: Card
+                        description: A single playing card
+                        type: object
+                        properties:
+                          suit:
+                            title: Suit
+                            description: Suit of a playing Card
+                            type: string
+                            enum:
+                              - clubs
+                              - diamonds
+                              - spades
+                              - hearts
+                          value:
+                            type: string
+                            enum:
+                              - "2"
+                              - "3"
+                              - "4"
+                              - "5"
+                              - "6"
+                              - "7"
+                              - "8"
+                              - "9"
+                              - "10"
+                              - J
+                              - Q
+                              - K
+                              - A
+                        required:
+                          - suit
+                          - value
+                      minItems: 13
+                      maxItems: 13
+              required:
+                - boardNr
+                - N
+                - E
+                - S
+                - W
+      responses:
+        "200":
+          description: The board was updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1board/patch/requestBody/content/application~1json/\
+                  schema"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+  /player:
+    patch:
+      operationId: swapPlayer
+      summary: Swaps out a player
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: dbvId
+          required: true
+          description: The DBV ID of the player
+          schema:
+            type: string
+      requestBody:
+        description: The new player
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Player
+              description: A wonderful individual playing the beautiful game of bridge
+              type: object
+              properties:
+                dbvId:
+                  type: string
+                  description: ID issued by deutscher bridgeverband, or a prefixed random
+                    number, if player is not registered
+                name:
+                  type: string
+              required:
+                - dbvId
+                - name
+      responses:
+        "200":
+          description: The new player
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1player/patch/requestBody/content/application~1json\
+                  /schema"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+  /contract:
+    patch:
+      operationId: patchContract
+      summary: Corrects a contract. Scores will be re-calculated.
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: roundNr
+          required: true
+          description: The round in which the contract was played
+          schema:
+            type: number
+        - in: query
+          name: boardNr
+          required: true
+          description: The board for which the contract was played
+          schema:
+            type: number
+      requestBody:
+        description: The corrected contract
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Contract
+              description: The Contract negotiated by Pairs playing a Deal
+              type: object
+              properties:
+                declarer:
+                  type: string
+                  enum:
+                    - N
+                    - S
+                    - E
+                    - W
+                level:
+                  type: number
+                  minimum: 1
+                  maximum: 7
+                suit:
+                  title: Suit
+                  description: Suit of a playing Card
+                  type: string
+                  enum:
+                    - clubs
+                    - diamonds
+                    - spades
+                    - hearts
+                    - noTrump
+                contra:
+                  type: string
+                  enum:
+                    - none
+                    - once
+                    - twice
+              required:
+                - declarer
+                - level
+                - suit
+                - contra
+      responses:
+        "200":
+          description: The corrected contract
+          content:
+            application/json:
+              schema:
+                title: Contract
+                description: The Contract negotiated by Pairs playing a Deal
+                type: object
+                properties:
+                  declarer:
+                    type: string
+                    enum:
+                      - N
+                      - S
+                      - E
+                      - W
+                  level:
+                    type: number
+                    minimum: 1
+                    maximum: 7
+                  suit:
+                    title: Suit
+                    description: Suit of a playing Card
+                    type: string
+                    enum:
+                      - clubs
+                      - diamonds
+                      - spades
+                      - hearts
+                      - noTrump
+                  contra:
+                    type: string
+                    enum:
+                      - none
+                      - once
+                      - twice
+                  danger:
+                    type: boolean
+                required:
+                  - declarer
+                  - level
+                  - suit
+                  - contra
+                  - danger
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+  /result:
+    patch:
+      operationId: patchResult
+      summary: Corrects a result. Scores will be re-calculated.
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: roundNr
+          required: true
+          description: The round in which the result was achieved
+          schema:
+            type: number
+        - in: query
+          name: boardNr
+          required: true
+          description: The board for which the result was achieved
+          schema:
+            type: number
+      requestBody:
+        description: The corrected result
+        required: true
+        content:
+          application/json:
+            schema:
+              title: RequestResult
+              description: A Result as it is sent by the client
+              type: object
+              properties:
+                result:
+                  title: Result
+                  description: The Result of a Deal
+                  type: number
+                  minimum: -13
+                  maximum: 6
+              required:
+                - result
+      responses:
+        "200":
+          description: The corrected result
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1result/patch/requestBody/content/application~1json\
+                  /schema"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+  /score:
+    patch:
+      summary: Overrides a score (e.g. for applying penalties).
+      tags:
+        - interventions
+      parameters:
+        - in: query
+          name: roundNr
+          required: true
+          description: The round in which the score was achieved
+          schema:
+            type: number
+        - in: query
+          name: boardNr
+          required: true
+          description: The board for which the score was achieved
+          schema:
+            type: number
+      requestBody:
+        description: The new score
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Score
+              description: A Score that overrides the actual Score
+              type: object
+              properties:
+                points:
+                  type: number
+                  minimum: -3160
+                  maximum: 3160
+                percent:
+                  type: number
+                  minimum: 0
+                  maximum: 100
+                reason:
+                  type: string
+                  description: A human-readable description of why the Score was changed
+      responses:
+        "200":
+          description: The new score
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1score/patch/requestBody/content/application~1json/\
+                  schema"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []
+  /newClientToken:
+    get:
+      summary: Generates a new clientToken for a table
+      tags:
+        - configuration
+      parameters:
+        - in: query
+          name: tableNr
+          description: The number of the table
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The new table configuration
+          content:
+            application/json:
+              schema:
+                title: Table
+                description: A physical Table
+                type: object
+                properties:
+                  clientToken:
+                    oneOf:
+                      - type: string
+                      - description: If no client is configured yet
+                        nullable: true
+                  currentRound:
+                    type: number
+                    minimum: 0
+                  tableNr:
+                    type: string
+                required:
+                  - clientToken
+                  - currentRound
+                  - tableNr
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+      security:
+        - bearerAuth: []

@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Suit",
+  "description": "Suit of a playing Card",
+  "type": "string",
+  "enum": ["clubs", "diamonds", "spades", "hearts"]
+}

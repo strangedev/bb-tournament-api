@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "RequestResult",
+  "description": "A Result as it is sent by the client",
+  "type": "object",
+  "properties": { "result": { "$ref": "./Result.json" } },
+  "required": ["result"]
+}

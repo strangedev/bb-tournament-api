@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Rounds",
+  "description": "A list of Rounds",
+  "type": "array",
+  "items": {
+    "$ref": "Round.json"
+  }
+}

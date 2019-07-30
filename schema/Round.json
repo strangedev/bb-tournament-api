@@ -1,0 +1,43 @@
+{
+  "title": "Round",
+  "description": "A seating constellation playing one or more deals.",
+  "type": "object",
+  "properties": {
+    "roundNr": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tableNr": {
+      "type": "string"
+    },
+    "NS": {
+      "type": "number",
+      "description": "Pair number"
+    },
+    "EW": {
+      "type": "number",
+      "description": "Pair number"
+    },
+    "deals": {
+      "type": "array",
+      "items": {
+        "title": "DBRef",
+        "description": "A reference to an _id of another document",
+        "type": "object",
+        "properties": {
+          "collection": {
+            "description": "Deal - The collection the referenced object resides in",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": ["collection", "id"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": ["roundNr", "tableNr", "NS", "EW", "deals"]
+}

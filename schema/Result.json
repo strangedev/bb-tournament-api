@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Result",
+  "description": "The Result of a Deal",
+  "type": "number",
+  "minimum": -13,
+  "maximum": 6
+}

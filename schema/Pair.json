@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Pair",
+  "description": "A pair of Players playing together",
+  "type": "object",
+  "properties": {
+    "number": {
+      "type": "number",
+      "minimum": 0
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "$ref": "Player.json"
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    }
+  }
+}
