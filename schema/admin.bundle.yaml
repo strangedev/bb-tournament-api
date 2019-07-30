@@ -493,6 +493,12 @@ paths:
                               type: number
                               minimum: 0
                               maximum: 100
+                            override:
+                              oneOf:
+                                - nullable: true
+                                - type: number
+                                  minimum: 0
+                                  maximum: 100
                           required:
                             - points
                             - percent

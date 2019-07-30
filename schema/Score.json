@@ -13,6 +13,16 @@
       "type": "number",
       "minimum": 0,
       "maximum": 100
+    },
+    "override": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      ]
     }
   },
   "required": ["points", "percent"]
