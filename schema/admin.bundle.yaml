@@ -548,15 +548,8 @@ paths:
                       type: object
                       properties:
                         query:
-                          type: array
+                          type: object
                           description: The query parameters of the request
-                          items:
-                            type: array
-                            items:
-                              type: string
-                              description: Key value pairs
-                              minItems: 2
-                              maxItems: 2
                         body:
                           type: object
                           description: The literal request body

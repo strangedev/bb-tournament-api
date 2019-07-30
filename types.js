@@ -378,9 +378,9 @@ const typeMap = {
         { json: "W", js: "W", typ: r("E") },
     ], false),
     "E": o([
-        { json: "oneOf", js: "oneOf", typ: a(r("OneOf")) },
+        { json: "oneOf", js: "oneOf", typ: a(r("EOneOf")) },
     ], false),
-    "OneOf": o([
+    "EOneOf": o([
         { json: "type", js: "type", typ: "" },
         { json: "description", js: "description", typ: u(undefined, "") },
         { json: "items", js: "items", typ: u(undefined, r("OneOfItems")) },
@@ -504,17 +504,8 @@ const typeMap = {
         { json: "properties", js: "properties", typ: r("RequestProperties") },
     ], false),
     "RequestProperties": o([
-        { json: "query", js: "query", typ: r("Query") },
+        { json: "query", js: "query", typ: r("Operationid") },
         { json: "body", js: "body", typ: r("Operationid") },
-    ], false),
-    "Query": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
-        { json: "description", js: "description", typ: "" },
-        { json: "items", js: "items", typ: r("QueryItems") },
-    ], false),
-    "QueryItems": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
-        { json: "items", js: "items", typ: r("OneOf") },
     ], false),
     "Card": o([
         { json: "$schema", js: "$schema", typ: "" },
