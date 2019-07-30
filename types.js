@@ -90,11 +90,11 @@ function dealsToJson(value) {
 }
 
 function toIntervention(json) {
-    return cast(JSON.parse(json), r("Tables"));
+    return cast(JSON.parse(json), r("Intervention"));
 }
 
 function interventionToJson(value) {
-    return JSON.stringify(uncast(value, r("Tables")), null, 2);
+    return JSON.stringify(uncast(value, r("Intervention")), null, 2);
 }
 
 function toInterventionScore(json) {
@@ -366,7 +366,7 @@ const typeMap = {
     "BoardMongodb": o([
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("BoardMongodbProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -390,7 +390,7 @@ const typeMap = {
     "OneOfItems": o([
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("PurpleProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -401,12 +401,12 @@ const typeMap = {
     "Suit": o([
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("SuitType") },
+        { json: "type", js: "type", typ: r("Type") },
         { json: "enum", js: "enum", typ: a(r("Enum")) },
         { json: "$schema", js: "$schema", typ: u(undefined, "") },
     ], false),
     "Value": o([
-        { json: "type", js: "type", typ: r("SuitType") },
+        { json: "type", js: "type", typ: r("Type") },
         { json: "enum", js: "enum", typ: a("") },
     ], false),
     "BoardNr": o([
@@ -417,7 +417,7 @@ const typeMap = {
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("BoardResultsProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -426,11 +426,11 @@ const typeMap = {
         { json: "otherResults", js: "otherResults", typ: r("OtherResults") },
     ], false),
     "OtherResults": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("OwnResult") },
     ], false),
     "OwnResult": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("OwnResultProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -446,13 +446,13 @@ const typeMap = {
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
-        { json: "items", js: "items", typ: u(undefined, r("PurpleItems")) },
-        { json: "properties", js: "properties", typ: u(undefined, r("TentacledProperties")) },
+        { json: "type", js: "type", typ: "" },
+        { json: "items", js: "items", typ: u(undefined, r("BoardsItems")) },
+        { json: "properties", js: "properties", typ: u(undefined, r("BoardsProperties")) },
     ], false),
-    "PurpleItems": o([
+    "BoardsItems": o([
         { json: "$ref", js: "$ref", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: u(undefined, r("PurpleType")) },
+        { json: "type", js: "type", typ: u(undefined, "") },
         { json: "properties", js: "properties", typ: u(undefined, r("FluffyProperties")) },
         { json: "required", js: "required", typ: u(undefined, a("")) },
     ], false),
@@ -465,53 +465,29 @@ const typeMap = {
         { json: "minimum", js: "minimum", typ: u(undefined, 0) },
         { json: "maximum", js: "maximum", typ: u(undefined, 0) },
     ], false),
-    "TentacledProperties": o([
-        { json: "operationid", js: "operationid", typ: u(undefined, r("Operationid")) },
-        { json: "datetime", js: "datetime", typ: u(undefined, r("Datetime")) },
-        { json: "admin", js: "admin", typ: u(undefined, r("Admin")) },
-        { json: "request", js: "request", typ: u(undefined, r("Request")) },
+    "BoardsProperties": o([
         { json: "points", js: "points", typ: u(undefined, r("Percent")) },
         { json: "percent", js: "percent", typ: u(undefined, r("Percent")) },
-        { json: "reason", js: "reason", typ: u(undefined, r("Operationid")) },
+        { json: "reason", js: "reason", typ: u(undefined, r("Reason")) },
         { json: "number", js: "number", typ: u(undefined, r("BoardNr")) },
         { json: "players", js: "players", typ: u(undefined, r("Players")) },
     ], false),
-    "Admin": o([
-        { json: "oneOf", js: "oneOf", typ: a(r("AdminOneOf")) },
-    ], false),
-    "AdminOneOf": o([
-        { json: "type", js: "type", typ: r("SuitType") },
-        { json: "format", js: "format", typ: "" },
-    ], false),
-    "Datetime": o([
-        { json: "type", js: "type", typ: r("SuitType") },
-        { json: "description", js: "description", typ: "" },
-        { json: "format", js: "format", typ: "" },
-    ], false),
-    "Operationid": o([
-        { json: "type", js: "type", typ: "" },
-        { json: "description", js: "description", typ: u(undefined, "") },
-    ], false),
     "Players": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("SuitClass") },
         { json: "minItems", js: "minItems", typ: 0 },
         { json: "maxItems", js: "maxItems", typ: 0 },
         { json: "uniqueItems", js: "uniqueItems", typ: true },
     ], false),
-    "Request": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
-        { json: "properties", js: "properties", typ: r("RequestProperties") },
-    ], false),
-    "RequestProperties": o([
-        { json: "query", js: "query", typ: r("Operationid") },
-        { json: "body", js: "body", typ: r("Operationid") },
+    "Reason": o([
+        { json: "type", js: "type", typ: "" },
+        { json: "description", js: "description", typ: u(undefined, "") },
     ], false),
     "Card": o([
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("CardProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -523,7 +499,7 @@ const typeMap = {
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("ContractProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -541,7 +517,7 @@ const typeMap = {
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("DealProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -558,23 +534,66 @@ const typeMap = {
         { json: "type", js: "type", typ: u(undefined, "") },
         { json: "$ref", js: "$ref", typ: u(undefined, "") },
     ], false),
+    "Intervention": o([
+        { json: "$schema", js: "$schema", typ: "" },
+        { json: "title", js: "title", typ: "" },
+        { json: "description", js: "description", typ: "" },
+        { json: "type", js: "type", typ: "" },
+        { json: "properties", js: "properties", typ: r("InterventionProperties") },
+        { json: "required", js: "required", typ: a("") },
+    ], false),
+    "InterventionProperties": o([
+        { json: "operationid", js: "operationid", typ: r("Reason") },
+        { json: "datetime", js: "datetime", typ: r("Datetime") },
+        { json: "admin", js: "admin", typ: r("Admin") },
+        { json: "request", js: "request", typ: r("Request") },
+    ], false),
+    "Admin": o([
+        { json: "oneOf", js: "oneOf", typ: a(r("AdminOneOf")) },
+    ], false),
+    "AdminOneOf": o([
+        { json: "type", js: "type", typ: r("Type") },
+        { json: "format", js: "format", typ: "" },
+    ], false),
+    "Datetime": o([
+        { json: "type", js: "type", typ: r("Type") },
+        { json: "description", js: "description", typ: "" },
+        { json: "format", js: "format", typ: "" },
+    ], false),
+    "Request": o([
+        { json: "type", js: "type", typ: "" },
+        { json: "properties", js: "properties", typ: r("RequestProperties") },
+        { json: "required", js: "required", typ: a("") },
+    ], false),
+    "RequestProperties": o([
+        { json: "query", js: "query", typ: r("Body") },
+        { json: "body", js: "body", typ: r("Body") },
+    ], false),
+    "Body": o([
+        { json: "type", js: "type", typ: "" },
+        { json: "description", js: "description", typ: "" },
+        { json: "properties", js: "properties", typ: r("BodyProperties") },
+        { json: "additionalProperties", js: "additionalProperties", typ: true },
+    ], false),
+    "BodyProperties": o([
+    ], false),
     "Player": o([
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("PlayerProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
     "PlayerProperties": o([
-        { json: "dbvId", js: "dbvId", typ: r("Operationid") },
+        { json: "dbvId", js: "dbvId", typ: r("Reason") },
         { json: "name", js: "name", typ: r("Danger") },
     ], false),
     "PlayerHand": o([
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("SuitClass") },
         { json: "minItems", js: "minItems", typ: 0 },
         { json: "maxItems", js: "maxItems", typ: 0 },
@@ -583,7 +602,7 @@ const typeMap = {
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("RequestResultProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -601,19 +620,19 @@ const typeMap = {
     "Round": o([
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("RoundProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
     "RoundProperties": o([
         { json: "roundNr", js: "roundNr", typ: r("BoardNr") },
         { json: "tableNr", js: "tableNr", typ: r("Danger") },
-        { json: "NS", js: "NS", typ: r("Operationid") },
-        { json: "EW", js: "EW", typ: r("Operationid") },
+        { json: "NS", js: "NS", typ: r("Reason") },
+        { json: "EW", js: "EW", typ: r("Reason") },
         { json: "deals", js: "deals", typ: r("PurpleDeals") },
     ], false),
     "PurpleDeals": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("DealsItems") },
         { json: "minItems", js: "minItems", typ: 0 },
         { json: "uniqueItems", js: "uniqueItems", typ: true },
@@ -621,19 +640,19 @@ const typeMap = {
     "DealsItems": o([
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
-        { json: "properties", js: "properties", typ: r("StickyProperties") },
+        { json: "type", js: "type", typ: "" },
+        { json: "properties", js: "properties", typ: r("TentacledProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
-    "StickyProperties": o([
-        { json: "collection", js: "collection", typ: r("Operationid") },
+    "TentacledProperties": o([
+        { json: "collection", js: "collection", typ: r("Reason") },
         { json: "id", js: "id", typ: r("Danger") },
     ], false),
     "Score": o([
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("ScoreProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -648,7 +667,7 @@ const typeMap = {
     "TableMongodb": o([
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("TableMongodbProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -658,13 +677,13 @@ const typeMap = {
         { json: "tableNr", js: "tableNr", typ: r("Danger") },
     ], false),
     "ClientToken": o([
-        { json: "oneOf", js: "oneOf", typ: a(r("Operationid")) },
+        { json: "oneOf", js: "oneOf", typ: a(r("Reason")) },
     ], false),
     "TableStatus": o([
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
         { json: "description", js: "description", typ: "" },
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "properties", js: "properties", typ: r("TableStatusProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
@@ -677,24 +696,24 @@ const typeMap = {
         { json: "deals", js: "deals", typ: r("FluffyDeals") },
     ], false),
     "BoardsNotYetEntered": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("BoardsNotYetEnteredItems") },
     ], false),
     "BoardsNotYetEnteredItems": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
-        { json: "properties", js: "properties", typ: r("IndigoProperties") },
+        { json: "type", js: "type", typ: "" },
+        { json: "properties", js: "properties", typ: r("StickyProperties") },
         { json: "required", js: "required", typ: a("") },
     ], false),
-    "IndigoProperties": o([
+    "StickyProperties": o([
         { json: "boardNr", js: "boardNr", typ: r("BoardNr") },
         { json: "missingDirections", js: "missingDirections", typ: r("MissingDirections") },
     ], false),
     "MissingDirections": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("Value") },
     ], false),
     "FluffyDeals": o([
-        { json: "type", js: "type", typ: r("PurpleType") },
+        { json: "type", js: "type", typ: "" },
         { json: "items", js: "items", typ: r("SuitClass") },
     ], false),
     "Enum": [
@@ -704,12 +723,8 @@ const typeMap = {
         "noTrump",
         "spades",
     ],
-    "SuitType": [
+    "Type": [
         "string",
-    ],
-    "PurpleType": [
-        "array",
-        "object",
     ],
 };
 

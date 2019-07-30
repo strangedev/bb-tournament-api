@@ -24,13 +24,19 @@
       "properties": {
         "query": {
           "type": "object",
-          "description": "The query parameters of the request"
+          "description": "The query parameters of the request",
+          "properties": {},
+          "additionalProperties": true
         },
         "body": {
           "type": "object",
-          "description": "The literal request body"
+          "description": "The literal request body",
+          "properties": {},
+          "additionalProperties": true
         }
-      }
+      },
+      "required": ["query", "body"]
     }
-  }
+  },
+  "required": ["operationId", "datetime", "admin", "request"]
 }
