@@ -14,6 +14,19 @@
       "name": "Julian Lorenz"
     }
   ],
-  "license": "All Rights Reserved",
-  "private": false
+  "license": "SEE LICENSE IN LICENSE",
+  "private": false,
+  "devDependencies": {
+    "ajv": "^6.10.2",
+    "ajv-cli": "^3.0.0",
+    "quicktype": "^15.0.197",
+    "speccy": "^0.11.0"
+  },
+  "scripts": {
+    "lint-apis": "for i in $(ls schema/*.yaml); do speccy lint -j -s operation-tags -s openapi-tags $i; done",
+    "cleanup-apis": "rm schema/*.bundle.yaml",
+    "bundle-apis": "yarn run cleanup-apis && for i in $(ls schema/*.yaml); do speccy resolve -j $i -o \"${i%.yaml}.bundle.yaml\"; done",
+    "bundle-types": "yarn run quicktype schema/ --lang js --out types.js",
+    "build": "yarn run lint-apis && yarn run bundle-apis && yarn run bundle-types"
+  }
 }
