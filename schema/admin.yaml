@@ -267,6 +267,12 @@ paths:
           description: The board for which the contract was played
           schema:
             type: number
+        - in: query
+          name: tableNr
+          required: true
+          description: The table that played the deal
+          schema:
+            type: string
       requestBody:
         description: The corrected contract
         required: True
@@ -307,6 +313,12 @@ paths:
           description: The board for which the result was achieved
           schema:
             type: number
+        - in: query
+          name: tableNr
+          required: true
+          description: The table that played the deal
+          schema:
+            type: string
       requestBody:
         description: The corrected result
         required: True
@@ -321,6 +333,8 @@ paths:
             application/json:
               schema:
                 $ref: "./RequestResult.json"
+        "409":
+          description: No contract exists for this deal, this prevents scores from being calculated. Please enter the contract first.
         "401": 
           $ref: "#/components/responses/401"
         "404":
@@ -347,6 +361,12 @@ paths:
           description: The board for which the score was achieved
           schema:
             type: number
+        - in: query
+          name: tableNr
+          required: true
+          description: The table that played the deal
+          schema:
+            type: string
       requestBody:
         description: The new score
         required: True
@@ -361,6 +381,8 @@ paths:
             application/json:
               schema:
                 $ref: "./InterventionScore.json"
+        "409":
+          description: No score exists for this deal. Please enter the contract and result first.
         "401": 
           $ref: "#/components/responses/401"
         "404":
