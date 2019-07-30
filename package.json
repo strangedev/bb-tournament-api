@@ -4,7 +4,16 @@
   "description": "API schema for BridgeBuddy tournament server",
   "main": "index.js",
   "repository": "git@github.com:strangedev/bb-tournament-api.git",
-  "author": "Noah Hummel <n.p.hummel@gmail.com>",
+  "author": "Noah Hummel <hummel@marvelous.systems>",
+  "contributors": [
+    {
+      "name": "Hannes Leutloff",
+      "email": "leutloff@marvelous.systems"
+    },
+    {
+      "name": "Julian Lorenz"
+    }
+  ],
   "license": "All Rights Reserved",
   "private": false
 }
