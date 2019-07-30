@@ -98,11 +98,11 @@ function interventionToJson(value) {
 }
 
 function toInterventionScore(json) {
-    return cast(JSON.parse(json), r("Tables"));
+    return cast(JSON.parse(json), r("InterventionScore"));
 }
 
 function interventionScoreToJson(value) {
-    return JSON.stringify(uncast(value, r("Tables")), null, 2);
+    return JSON.stringify(uncast(value, r("InterventionScore")), null, 2);
 }
 
 function toInterventions(json) {
@@ -458,19 +458,16 @@ const typeMap = {
     ], false),
     "FluffyProperties": o([
         { json: "pair", js: "pair", typ: r("SuitClass") },
-        { json: "score", js: "score", typ: r("Percent") },
+        { json: "score", js: "score", typ: r("Level") },
     ], false),
-    "Percent": o([
+    "Level": o([
         { json: "type", js: "type", typ: "" },
         { json: "minimum", js: "minimum", typ: u(undefined, 0) },
         { json: "maximum", js: "maximum", typ: u(undefined, 0) },
     ], false),
     "BoardsProperties": o([
-        { json: "points", js: "points", typ: u(undefined, r("Percent")) },
-        { json: "percent", js: "percent", typ: u(undefined, r("Percent")) },
-        { json: "reason", js: "reason", typ: u(undefined, r("Reason")) },
-        { json: "number", js: "number", typ: u(undefined, r("BoardNr")) },
-        { json: "players", js: "players", typ: u(undefined, r("Players")) },
+        { json: "number", js: "number", typ: r("BoardNr") },
+        { json: "players", js: "players", typ: r("Players") },
     ], false),
     "Players": o([
         { json: "type", js: "type", typ: "" },
@@ -478,10 +475,6 @@ const typeMap = {
         { json: "minItems", js: "minItems", typ: 0 },
         { json: "maxItems", js: "maxItems", typ: 0 },
         { json: "uniqueItems", js: "uniqueItems", typ: true },
-    ], false),
-    "Reason": o([
-        { json: "type", js: "type", typ: "" },
-        { json: "description", js: "description", typ: u(undefined, "") },
     ], false),
     "Card": o([
         { json: "$schema", js: "$schema", typ: "" },
@@ -505,7 +498,7 @@ const typeMap = {
     ], false),
     "ContractProperties": o([
         { json: "declarer", js: "declarer", typ: r("Value") },
-        { json: "level", js: "level", typ: r("Percent") },
+        { json: "level", js: "level", typ: r("Level") },
         { json: "suit", js: "suit", typ: r("Suit") },
         { json: "contra", js: "contra", typ: r("Value") },
         { json: "danger", js: "danger", typ: u(undefined, r("Danger")) },
@@ -543,7 +536,7 @@ const typeMap = {
         { json: "required", js: "required", typ: a("") },
     ], false),
     "InterventionProperties": o([
-        { json: "operationid", js: "operationid", typ: r("Reason") },
+        { json: "operationid", js: "operationid", typ: r("Operationid") },
         { json: "datetime", js: "datetime", typ: r("Datetime") },
         { json: "admin", js: "admin", typ: r("Admin") },
         { json: "request", js: "request", typ: r("Request") },
@@ -559,6 +552,10 @@ const typeMap = {
         { json: "type", js: "type", typ: r("Type") },
         { json: "description", js: "description", typ: "" },
         { json: "format", js: "format", typ: "" },
+    ], false),
+    "Operationid": o([
+        { json: "type", js: "type", typ: "" },
+        { json: "description", js: "description", typ: u(undefined, "") },
     ], false),
     "Request": o([
         { json: "type", js: "type", typ: "" },
@@ -577,6 +574,17 @@ const typeMap = {
     ], false),
     "BodyProperties": o([
     ], false),
+    "InterventionScore": o([
+        { json: "$schema", js: "$schema", typ: "" },
+        { json: "title", js: "title", typ: "" },
+        { json: "description", js: "description", typ: "" },
+        { json: "type", js: "type", typ: "" },
+        { json: "properties", js: "properties", typ: r("InterventionScoreProperties") },
+        { json: "required", js: "required", typ: a("") },
+    ], false),
+    "InterventionScoreProperties": o([
+        { json: "percent", js: "percent", typ: r("Level") },
+    ], false),
     "Player": o([
         { json: "$schema", js: "$schema", typ: "" },
         { json: "title", js: "title", typ: "" },
@@ -586,7 +594,7 @@ const typeMap = {
         { json: "required", js: "required", typ: a("") },
     ], false),
     "PlayerProperties": o([
-        { json: "dbvId", js: "dbvId", typ: r("Reason") },
+        { json: "dbvId", js: "dbvId", typ: r("Operationid") },
         { json: "name", js: "name", typ: r("Danger") },
     ], false),
     "PlayerHand": o([
@@ -627,8 +635,8 @@ const typeMap = {
     "RoundProperties": o([
         { json: "roundNr", js: "roundNr", typ: r("BoardNr") },
         { json: "tableNr", js: "tableNr", typ: r("Danger") },
-        { json: "NS", js: "NS", typ: r("Reason") },
-        { json: "EW", js: "EW", typ: r("Reason") },
+        { json: "NS", js: "NS", typ: r("Operationid") },
+        { json: "EW", js: "EW", typ: r("Operationid") },
         { json: "deals", js: "deals", typ: r("PurpleDeals") },
     ], false),
     "PurpleDeals": o([
@@ -645,7 +653,7 @@ const typeMap = {
         { json: "required", js: "required", typ: a("") },
     ], false),
     "TentacledProperties": o([
-        { json: "collection", js: "collection", typ: r("Reason") },
+        { json: "collection", js: "collection", typ: r("Operationid") },
         { json: "id", js: "id", typ: r("Danger") },
     ], false),
     "Score": o([
@@ -657,12 +665,12 @@ const typeMap = {
         { json: "required", js: "required", typ: a("") },
     ], false),
     "ScoreProperties": o([
-        { json: "points", js: "points", typ: r("Percent") },
-        { json: "percent", js: "percent", typ: r("Percent") },
+        { json: "points", js: "points", typ: r("Level") },
+        { json: "percent", js: "percent", typ: r("Level") },
         { json: "override", js: "override", typ: r("Override") },
     ], false),
     "Override": o([
-        { json: "oneOf", js: "oneOf", typ: a(r("Percent")) },
+        { json: "oneOf", js: "oneOf", typ: a(r("Level")) },
     ], false),
     "TableMongodb": o([
         { json: "title", js: "title", typ: "" },
@@ -677,7 +685,7 @@ const typeMap = {
         { json: "tableNr", js: "tableNr", typ: r("Danger") },
     ], false),
     "ClientToken": o([
-        { json: "oneOf", js: "oneOf", typ: a(r("Reason")) },
+        { json: "oneOf", js: "oneOf", typ: a(r("Operationid")) },
     ], false),
     "TableStatus": o([
         { json: "$schema", js: "$schema", typ: "" },

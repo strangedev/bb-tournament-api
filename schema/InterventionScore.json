@@ -1,22 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "Score",
+  "title": "InterventionScore",
   "description": "A Score that overrides the actual Score",
   "type": "object",
   "properties": {
-    "points": {
-      "type": "number",
-      "minimum": -3160,
-      "maximum": 3160
-    },
     "percent": {
       "type": "number",
       "minimum": 0,
       "maximum": 100
-    },
-    "reason": {
-      "type": "string",
-      "description": "A human-readable description of why the Score was changed"
     }
-  }
+  },
+  "required": ["percent"]
 }
