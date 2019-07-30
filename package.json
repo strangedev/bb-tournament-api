@@ -1,6 +1,6 @@
 {
   "name": "bb-tournament-api",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "API schema for BridgeBuddy tournament server",
   "main": "index.js",
   "repository": "git@github.com:strangedev/bb-tournament-api.git",
