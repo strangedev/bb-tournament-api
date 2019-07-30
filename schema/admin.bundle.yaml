@@ -928,6 +928,7 @@ paths:
         - bearerAuth: []
   /score:
     patch:
+      operationId: patchScore
       summary: Overrides a score (e.g. for applying penalties).
       tags:
         - interventions
@@ -981,6 +982,7 @@ paths:
         - bearerAuth: []
   /newClientToken:
     get:
+      operationId: newClientToken
       summary: Generates a new clientToken for a table
       tags:
         - configuration
