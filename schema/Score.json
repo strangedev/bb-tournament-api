@@ -6,7 +6,7 @@
   "properties": {
     "points": {
       "type": "number",
-      "minimum": -3160,
+      "minimum": -7600,
       "maximum": 3160
     },
     "percent": {

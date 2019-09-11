@@ -170,7 +170,7 @@ paths:
       summary: Retrieves a list of all past interventions
       responses:
         "200":
-          description: A list of all deals
+          description: A list of all past interventions
           content:
             application/json:
               schema:
@@ -381,8 +381,6 @@ paths:
             application/json:
               schema:
                 $ref: "./InterventionScore.json"
-        "409":
-          description: No score exists for this deal. Please enter the contract and result first.
         "401": 
           $ref: "#/components/responses/401"
         "404":
